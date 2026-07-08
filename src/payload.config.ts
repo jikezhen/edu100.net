@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { zh } from '@payloadcms/translations/languages/zh'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
@@ -49,13 +50,17 @@ const cloudflare =
     : await getCloudflareContext({ async: true })
 
 export default buildConfig({
+  i18n: {
+    supportedLanguages: { zh },
+    fallbackLanguage: 'zh',
+  },
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: ' | Edu100 CMS',
+      titleSuffix: ' | Edu100 管理后台',
     },
   },
   collections: [Users, Categories, Posts, Courses],

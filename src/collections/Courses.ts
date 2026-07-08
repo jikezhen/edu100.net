@@ -1,14 +1,20 @@
 import type { CollectionConfig } from 'payload'
-import { slugField } from 'payload'
 
 import { adminOrEditor, authenticatedOrPublished } from '../access'
-import { slugifyTitle } from '../lib/slugify'
+import { chineseSlugField } from '../fields/chineseSlugField'
+import { adminGroups } from '../lib/adminGroups'
 
 export const Courses: CollectionConfig = {
   slug: 'courses',
+  labels: {
+    singular: '课程',
+    plural: '课程',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'level', 'status', 'publishedAt', 'updatedAt'],
+    group: adminGroups.content,
+    description: '管理课程内容，含难度、课时、价格与讲师信息。',
   },
   access: {
     read: authenticatedOrPublished,
@@ -23,11 +29,14 @@ export const Courses: CollectionConfig = {
       required: true,
       label: '课程名称',
     },
-    slugField({ fieldToUse: 'title', slugify: slugifyTitle }),
+    chineseSlugField({ fieldToUse: 'title' }),
     {
       name: 'excerpt',
       type: 'textarea',
       label: '课程简介',
+      admin: {
+        description: '显示在课程列表和详情页顶部的简短介绍。',
+      },
     },
     {
       name: 'description',
@@ -40,7 +49,7 @@ export const Courses: CollectionConfig = {
       type: 'text',
       label: '封面图 URL',
       admin: {
-        description: '填写图片外链地址（当前版本未启用 R2 文件上传）',
+        description: '填写图片外链地址（当前版本未启用 R2 文件上传）。',
       },
     },
     {
@@ -83,7 +92,7 @@ export const Courses: CollectionConfig = {
       type: 'number',
       label: '价格（元）',
       admin: {
-        description: '留空表示免费课程',
+        description: '留空表示免费课程。',
       },
     },
     {
@@ -98,6 +107,7 @@ export const Courses: CollectionConfig = {
       label: '状态',
       admin: {
         position: 'sidebar',
+        description: '仅「已发布」的课程会显示在前台网站。',
       },
     },
     {
@@ -106,6 +116,7 @@ export const Courses: CollectionConfig = {
       label: '发布时间',
       admin: {
         position: 'sidebar',
+        description: '设置为「已发布」时会自动填入当前时间。',
         date: {
           pickerAppearance: 'dayAndTime',
         },

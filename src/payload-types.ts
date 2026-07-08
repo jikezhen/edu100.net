@@ -123,15 +123,23 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * 管理系统登录账号与角色权限。
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
   name?: string | null;
+  /**
+   * 管理员可管理用户与站点设置，编辑可管理内容。
+   */
   roles: ('admin' | 'editor')[];
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -150,6 +158,8 @@ export interface User {
   collection: 'users';
 }
 /**
+ * 为文章和课程提供分类标签。
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
@@ -157,16 +167,24 @@ export interface Category {
   id: number;
   name: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * 启用后，保存时将自动根据标题生成 URL 别名。
    */
   generateSlug?: boolean | null;
+  /**
+   * 用于前台详情页地址，例如：/posts/文章-1
+   */
   slug: string;
+  /**
+   * 区分该分类用于文章还是课程。
+   */
   type: 'post' | 'course';
   description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * 管理教育文章，支持富文本正文与发布状态。
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
@@ -174,10 +192,16 @@ export interface Post {
   id: number;
   title: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * 启用后，保存时将自动根据标题生成 URL 别名。
    */
   generateSlug?: boolean | null;
+  /**
+   * 用于前台详情页地址，例如：/posts/文章-1
+   */
   slug: string;
+  /**
+   * 显示在列表页和详情页顶部的简短介绍。
+   */
   excerpt?: string | null;
   content: {
     root: {
@@ -195,17 +219,25 @@ export interface Post {
     [k: string]: unknown;
   };
   /**
-   * 填写图片外链地址（当前版本未启用 R2 文件上传）
+   * 填写图片外链地址（当前版本未启用 R2 文件上传）。
    */
   featuredImageUrl?: string | null;
   category?: (number | null) | Category;
   author?: (number | null) | User;
+  /**
+   * 仅「已发布」的内容会显示在前台网站。
+   */
   status: 'draft' | 'published';
+  /**
+   * 设置为「已发布」时会自动填入当前时间。
+   */
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * 管理课程内容，含难度、课时、价格与讲师信息。
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courses".
  */
@@ -213,10 +245,16 @@ export interface Course {
   id: number;
   title: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * 启用后，保存时将自动根据标题生成 URL 别名。
    */
   generateSlug?: boolean | null;
+  /**
+   * 用于前台详情页地址，例如：/posts/文章-1
+   */
   slug: string;
+  /**
+   * 显示在课程列表和详情页顶部的简短介绍。
+   */
   excerpt?: string | null;
   description: {
     root: {
@@ -234,7 +272,7 @@ export interface Course {
     [k: string]: unknown;
   };
   /**
-   * 填写图片外链地址（当前版本未启用 R2 文件上传）
+   * 填写图片外链地址（当前版本未启用 R2 文件上传）。
    */
   featuredImageUrl?: string | null;
   category?: (number | null) | Category;
@@ -245,10 +283,16 @@ export interface Course {
    */
   duration?: string | null;
   /**
-   * 留空表示免费课程
+   * 留空表示免费课程。
    */
   price?: number | null;
+  /**
+   * 仅「已发布」的课程会显示在前台网站。
+   */
   status: 'draft' | 'published';
+  /**
+   * 设置为「已发布」时会自动填入当前时间。
+   */
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -344,6 +388,9 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -452,6 +499,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * 配置站点名称、首页文案、页脚信息等全局内容。
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */

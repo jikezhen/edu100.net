@@ -1,10 +1,15 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminOnly, anyone } from '../access'
+import { adminGroups } from '../lib/adminGroups'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: '站点设置',
+  admin: {
+    group: adminGroups.site,
+    description: '配置站点名称、首页文案、页脚信息等全局内容。',
+  },
   access: {
     read: anyone,
     update: adminOnly,

@@ -1,14 +1,20 @@
 import type { CollectionConfig } from 'payload'
-import { slugField } from 'payload'
 
 import { adminOrEditor, anyone } from '../access'
-import { slugifyTitle } from '../lib/slugify'
+import { chineseSlugField } from '../fields/chineseSlugField'
+import { adminGroups } from '../lib/adminGroups'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
+  labels: {
+    singular: '分类',
+    plural: '分类',
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'updatedAt'],
+    group: adminGroups.content,
+    description: '为文章和课程提供分类标签。',
   },
   access: {
     read: anyone,
@@ -23,7 +29,7 @@ export const Categories: CollectionConfig = {
       required: true,
       label: '分类名称',
     },
-    slugField({ fieldToUse: 'name', slugify: slugifyTitle }),
+    chineseSlugField({ fieldToUse: 'name' }),
     {
       name: 'type',
       type: 'select',
@@ -34,6 +40,9 @@ export const Categories: CollectionConfig = {
         { label: '课程', value: 'course' },
       ],
       label: '分类类型',
+      admin: {
+        description: '区分该分类用于文章还是课程。',
+      },
     },
     {
       name: 'description',
