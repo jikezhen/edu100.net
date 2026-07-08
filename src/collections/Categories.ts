@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
 import { adminOrEditor, anyone } from '../access'
+import { slugifyTitle } from '../lib/slugify'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -22,7 +23,7 @@ export const Categories: CollectionConfig = {
       required: true,
       label: '分类名称',
     },
-    slugField({ fieldToUse: 'name' }),
+    slugField({ fieldToUse: 'name', slugify: slugifyTitle }),
     {
       name: 'type',
       type: 'select',

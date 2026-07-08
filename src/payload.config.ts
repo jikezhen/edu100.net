@@ -60,7 +60,10 @@ export default buildConfig({
   },
   collections: [Users, Categories, Posts, Courses],
   globals: [SiteSettings],
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) =>
+      defaultFeatures.filter((feature) => feature.key !== 'upload'),
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

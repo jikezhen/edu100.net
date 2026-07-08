@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
 import { adminOrEditor, authenticatedOrPublished } from '../access'
+import { slugifyTitle } from '../lib/slugify'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -22,7 +23,7 @@ export const Posts: CollectionConfig = {
       required: true,
       label: '标题',
     },
-    slugField({ fieldToUse: 'title' }),
+    slugField({ fieldToUse: 'title', slugify: slugifyTitle }),
     {
       name: 'excerpt',
       type: 'textarea',
