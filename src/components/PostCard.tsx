@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
+import { postDetailPath } from '@/lib/routes'
 
 type PostCardProps = {
   post: Post
@@ -21,7 +22,7 @@ export function PostCard({ post }: PostCardProps) {
       <div className="card-body">
         {categoryName && <span className="card-tag">{categoryName}</span>}
         <h3>
-          <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+          <Link href={postDetailPath(post.slug)}>{post.title}</Link>
         </h3>
         {post.excerpt && <p>{post.excerpt}</p>}
         {post.publishedAt && (

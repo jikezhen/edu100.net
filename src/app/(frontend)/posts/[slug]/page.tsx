@@ -4,13 +4,15 @@ import React from 'react'
 
 import { RichTextContent } from '@/components/RichTextContent'
 import { getPayloadClient } from '@/lib/payload'
+import { decodeRouteSlug } from '@/lib/routes'
 
 type PageProps = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params
+  const { slug: rawSlug } = await params
+  const slug = decodeRouteSlug(rawSlug)
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'posts',
@@ -30,7 +32,8 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function PostDetailPage({ params }: PageProps) {
-  const { slug } = await params
+  const { slug: rawSlug } = await params
+  const slug = decodeRouteSlug(rawSlug)
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'posts',

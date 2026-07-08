@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import type { Course } from '@/payload-types'
+import { courseDetailPath } from '@/lib/routes'
 
 const levelLabels: Record<string, string> = {
   beginner: '入门',
@@ -30,7 +31,7 @@ export function CourseCard({ course }: CourseCardProps) {
           <span className="card-tag card-tag--muted">{levelLabels[course.level] || course.level}</span>
         </div>
         <h3>
-          <Link href={`/courses/${course.slug}`}>{course.title}</Link>
+          <Link href={courseDetailPath(course.slug)}>{course.title}</Link>
         </h3>
         {course.excerpt && <p>{course.excerpt}</p>}
         <div className="card-meta-row">
